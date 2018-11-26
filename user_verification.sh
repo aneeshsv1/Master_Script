@@ -14,7 +14,7 @@ echo -e "**         -----> The above option is to check the affected accoout/use
 echo -e "**     Author Aneesh S V                                                                             **"
 echo -e "*******************************************************************************************************"
 userid=`/usr/bin/whoami`
-if [ $userid == root ]
+if [ $userid == root ] Add double quotes like "$userid" and test
   then echo -e "\e[32mWelcome Root,Explore the Option Of User Managment\e[0m"
   sleep 3
   else echo -e "\e[35mPlease run as root/admin privilage\e[0m" && exit 0
