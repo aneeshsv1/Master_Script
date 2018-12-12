@@ -1,3 +1,2 @@
-Added shadowm locking funcionality in 1.sh
 Do testing of 1.sh and integrate with test.sh
 Then work on the last function (for sudoers checking) and integrate finally
