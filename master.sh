@@ -261,6 +261,31 @@ function fscheck
  echo
  done
 }
+function cpucheck
+{
+ sleep 1
+ echo "Current CPU usage % is:" `top -b -n1 | grep "Cpu(s)" | awk '{print $2 + $4}'`
+ sleep 1
+ echo "Top 10 CPU utilizing processes are in below order"
+ echo "================================================="
+ sleep 1
+ ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%cpu | head 
+ sleep 1
+}
+function memcheck
+{
+ FREE_DATA=`free -m | grep Mem` 
+ CURRENT=`echo $FREE_DATA | cut -f3 -d' '`
+ TOTAL=`echo $FREE_DATA | cut -f2 -d' '`
+ sleep 1
+ echo "Current Memory usage % is:" $(echo "scale = 2; $CURRENT/$TOTAL*100" | bc)
+ sleep 1
+ echo "Top 10 Memory utilizing processes are in below order"
+ echo "===================================================="
+ sleep 1
+ ps -eo pid,ppid,cmd,%mem,%cpu --sort=-%mem | head
+ sleep 1
+}
 function exit
 {
 break
@@ -281,6 +306,10 @@ echo -e "**     4 - Service status                                              
 echo -e "**         -----> This option is to check th status of provided service and to start same optionally **"
 echo -e "**     5 - Filesystem Usage                                                                          **"
 echo -e "**         -----> This option is to check the over threshold Filesystems and the big files in them   **"
+echo -e "**     6 - CPU usage                                                                                 **"
+echo -e "**         -----> This option is to check the CPU usage % and top CPU utilizing processes            **"
+echo -e "**     7 - Memory Usage                                                                              **"
+echo -e "**         -----> This option is to check the Memory usage % and top memory utilizing processes      **"  
 echo -e "*******************************************************************************************************"
 userid=`/usr/bin/whoami`
 if [[ $userid == root ]]
@@ -301,7 +330,9 @@ do
  echo "3 - User Admin access Information"
  echo "4 - Service status"
  echo "5 - Exceeded Filesystems usage status"
- echo "6 - Exit"
+ echo "6 - CPU Usage statistics"
+ echo "7 - Memory Usage statistics"
+ echo "8 - Exit"
  echo
  echo -n "Enter Choice: "
  read selection
@@ -311,6 +342,8 @@ do
   3) sudocheck;;
   4) servicecheck;;
   5) fscheck;;
-  6) exit
+  6) cpucheck;;
+  7) memcheck;;
+  8) exit
  esac
 done
